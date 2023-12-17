@@ -5,14 +5,17 @@ try {
   const initialForm = JSON.parse(localStorage.getItem(localStorageKey));
 
   Array.from(form.elements).forEach(element => {
-    const currentValue = initialForm[element.name];
+    let currentValue = initialForm[element.name];
     if (currentValue) {
       element.value = currentValue;
     }
   });
 } catch (error) {
-  console.error('ERROR FORM');
+  console.log(error.message);
 }
+
+let inputContent = '';
+let textContent = '';
 
 form.addEventListener('input', event => {
   const formData = new FormData(form);
@@ -20,6 +23,8 @@ form.addEventListener('input', event => {
 
   formData.forEach((value, key) => {
     formObj[key] = value;
+    inputContent = formObj.email;
+    textContent = formObj.message;
   });
 
   localStorage.setItem(localStorageKey, JSON.stringify(formObj));
@@ -27,9 +32,10 @@ form.addEventListener('input', event => {
 
 form.addEventListener('submit', event => {
   event.preventDefault();
+
   const obj = JSON.parse(localStorage.getItem(localStorageKey));
 
-  if (obj.email && obj.message) {
+  if (inputContent !== '' && textContent !== '') {
     console.log(obj);
     localStorage.removeItem(localStorageKey);
     form.reset();
