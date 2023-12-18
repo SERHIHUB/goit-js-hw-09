@@ -10,12 +10,7 @@ try {
       element.value = currentValue;
     }
   });
-} catch (error) {
-  console.log(error.message);
-}
-
-let inputContent = '';
-let textContent = '';
+} catch (error) {}
 
 form.addEventListener('input', event => {
   const formData = new FormData(form);
@@ -23,8 +18,6 @@ form.addEventListener('input', event => {
 
   formData.forEach((value, key) => {
     formObj[key] = value;
-    inputContent = formObj.email;
-    textContent = formObj.message;
   });
 
   localStorage.setItem(localStorageKey, JSON.stringify(formObj));
@@ -35,7 +28,11 @@ form.addEventListener('submit', event => {
 
   const obj = JSON.parse(localStorage.getItem(localStorageKey));
 
-  if (inputContent !== '' && textContent !== '') {
+  const myFormData = new FormData(form);
+  const emailContent = myFormData.get('email');
+  const areaContent = myFormData.get('message');
+
+  if (emailContent !== '' && areaContent !== '') {
     console.log(obj);
     localStorage.removeItem(localStorageKey);
     form.reset();
