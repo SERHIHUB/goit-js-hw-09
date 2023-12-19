@@ -90,6 +90,6 @@ const addPic = images.reduce(
 gallery.insertAdjacentHTML('beforeend', addPic);
 
 let newGallery = new SimpleLightbox('.gallery a', {
-  captionDeley: 250,
+  captionDelay: 250,
   captionsData: `alt`,
 });

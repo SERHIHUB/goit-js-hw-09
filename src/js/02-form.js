@@ -1,23 +1,31 @@
 const form = document.querySelector('.feedback-form');
 const localStorageKey = 'feedback-form-state';
 
-try {
-  const initialForm = JSON.parse(localStorage.getItem(localStorageKey));
-
+function chekFormValue(obj) {
   Array.from(form.elements).forEach(element => {
-    let currentValue = initialForm[element.name];
+    let currentValue = obj[element.name];
     if (currentValue) {
       element.value = currentValue;
     }
   });
-} catch (error) {}
+}
+
+try {
+  const defaultObject = {};
+  const initialForm =
+    JSON.parse(localStorage.getItem(localStorageKey)) ?? defaultObject;
+
+  chekFormValue(initialForm);
+} catch (error) {
+  console.log(error.message);
+}
 
 form.addEventListener('input', event => {
   const formData = new FormData(form);
   const formObj = {};
 
   formData.forEach((value, key) => {
-    formObj[key] = value;
+    formObj[key] = value.trim();
   });
 
   localStorage.setItem(localStorageKey, JSON.stringify(formObj));
@@ -32,7 +40,7 @@ form.addEventListener('submit', event => {
   const emailContent = myFormData.get('email');
   const areaContent = myFormData.get('message');
 
-  if (emailContent !== '' && areaContent !== '') {
+  if (emailContent.trim() !== '' && areaContent.trim() !== '') {
     console.log(obj);
     localStorage.removeItem(localStorageKey);
     form.reset();
